@@ -9,12 +9,12 @@ install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local/share/applications"
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local/share/desktop-directories"
 
 #Network config
-if_no_text_then_add "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf" '\"AIMLAB_2.4G\"' "
+if_no_text_then_add "${ROOTFS_DIR}/etc/wpa_supplicant/wpa_supplicant.conf" "$wifiUsr" "
 ap_scan=1
 
 network={
-    ssid=\"<x>\"
-    psk=\"<y>\"
+    ssid=\"$wifiUsr\"
+    psk=\"$wifiPw\"
 }"
 
 on_chroot << EOF
@@ -28,11 +28,11 @@ if_no_text_then_add "${ROOTFS_DIR}/boot/config.txt" "display_rotate=2" "
 hdmi_group=2
 hdmi_mode=87
 hdmi_cvt 800 480 60 6 0 0 0
-#display_rotate=2"
+display_rotate=2"
 
 #Proxy (comment these lines if dont want proxy settings)
-if_no_text_then_add "${ROOTFS_DIR}/etc/apt/apt.conf.d/10proxy" "Acquire::http::proxy" '
-Acquire::http::proxy "http://<x>:<y>@proxy-sa.mahidol:8080/";'
+if_no_text_then_add "${ROOTFS_DIR}/etc/apt/apt.conf.d/10proxy" "Acquire::http::proxy" "
+Acquire::http::proxy \"http://$proxyUsr:$proxyPw@proxy-sa.mahidol:8080/\";"
 
 #i2c
 if_no_text_then_add "${ROOTFS_DIR}/etc/modules" "snd-bcm2835" "
@@ -89,8 +89,20 @@ fi
 # change ownership of _testing
 chown -R 1000:1000 "${ROOTFS_DIR}/home/pi/_testing"
 
+sed -i "s/<x>/$proxyUsr/g" files/installRequirements.sh
+sed -i "s/<y>/$proxyPw/g" files/installRequirements.sh
+
+echo "Replace some texts before copying."
+cat files/installRequirements.sh | grep 'export http_proxy'
+
 # add dependencieds installation script to _script
 cp files/installRequirements.sh "${ROOTFS_DIR}/home/pi/_scripts/installRequirements.sh"
+
+sed -i "s/$proxyUsr/<x>/g" files/installRequirements.sh
+sed -i "s/$proxyPw/<y>/g" files/installRequirements.sh
+
+echo "Replace some texts back to original."
+cat files/installRequirements.sh | grep 'export http_proxy'
 
 # change ownership of _testing
 chown 1000:1000 "${ROOTFS_DIR}/home/pi/_scripts/installRequirements.sh"

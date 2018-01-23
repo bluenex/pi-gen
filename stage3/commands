@@ -1,3 +1,5 @@
+#!/bin/bash -e
+
 #if_no_text_then_add <filename> <string> <text to add>
 if_no_text_then_add() {
     if ! grep -R "$2" "$1"; 
@@ -10,3 +12,8 @@ EOF
     fi
 }
 
+#proxy user and pw
+proxyUsr=''
+proxyPw=''
+wifiUsr=''
+wifiPw=''
