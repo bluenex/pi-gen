@@ -2,6 +2,7 @@ gstreamer1.0-x gstreamer1.0-omx gstreamer1.0-plugins-base gstreamer1.0-plugins-g
 xpdf gtk2-engines alsa-utils
 desktop-base
 git
+git-core
 omxplayer
 raspberrypi-artwork
 policykit-1
@@ -11,3 +12,21 @@ chromium-browser rpi-chromium-mods
 gldriver-test
 fonts-droid-fallback
 fonts-liberation2
+python
+python3
+python-serial python3-serial
+python-picamera python3-picamera
+debian-reference-en dillo x2x
+python-pip python3-pip
+python3-numpy
+pypy
+alacarte rc-gui sense-hat
+libgl1-mesa-dri libgles1-mesa libgles2-mesa xcompmgr
+wiringpi pigpio python-pigpio python3-pigpio raspi-gpio python-gpiozero python3-gpiozero python3-rpi.gpio
+python-spidev python3-spidev
+python-twython python3-twython
+python-smbus python3-smbus
+python-sense-emu python3-sense-emu sense-emu-tools python-sense-emu-doc
+pprompt
+i2c-tools
+lirc

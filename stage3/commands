@@ -1,0 +1,12 @@
+#if_no_text_then_add <filename> <string> <text to add>
+if_no_text_then_add() {
+    if ! grep -R "$2" "$1"; 
+    then 
+        tee -a "$1" << EOF
+$3  
+EOF
+    else 
+        echo "This string is already in a target file."
+    fi
+}
+
