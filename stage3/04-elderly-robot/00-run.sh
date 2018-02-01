@@ -6,11 +6,16 @@ source ../commands
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/_log"
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/_projects"
 
-# clone dynamixel tools into _testing
+# clone first-boot-scripts into _scripts if no repo yet
+# pull if there is already a repo
 scriptPath="${ROOTFS_DIR}/home/pi/_scripts/first-boot-scripts"
 if [ ! -d $scriptPath ]; then
     on_chroot << EOF
     git clone https://github.com/aimlabmu/first-boot-scripts /home/pi/_scripts/first-boot-scripts
+EOF
+else
+    on_chroot << EOF
+    git --work-tree=/home/pi/_scripts/first-boot-scripts --git-dir=/home/pi/_scripts/first-boot-scripts/.git pull origin master
 EOF
 fi
 
