@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-#if_no_text_then_add <filename> <string> <text to add>
+# if_no_text_then_add <filename> <string> <text to add>
 if_no_text_then_add() {
     if ! grep -R "$2" "$1"; 
     then 
@@ -10,6 +10,12 @@ EOF
     else 
         echo "This string is already in a target file."
     fi
+}
+
+# replace_this_with_that <filename> <this> <that>
+replace_this_with_that() {
+    sed -i "s/$2/$3/g" "$1"
+    echo $3 is replaced with $2 in $1...
 }
 
 #proxy user and pw

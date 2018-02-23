@@ -5,18 +5,16 @@ source ../commands
 ##lirc
 log "start installing lirc"
 
-# # create Downloads folder
-# install -v -o pi -g pi -d "${ROOTFS_DIR}/home/pi/Downloads"
-
-# download lirc .deb
+# download source from github
 if [ ! -e files/python3-lirc_1.2.1-1_armhf.deb ]; then
-	wget https://github.com/tompreston/python-lirc/releases/download/v1.2.1/python3-lirc_1.2.1-1_armhf.deb -O files/python3-lirc_1.2.1-1_armhf.deb
+	wget "https://github.com/tompreston/python-lirc/releases/download/v1.2.1/python3-lirc_1.2.1-1_armhf.deb" -P files/
 fi
 
-cp files/python3-lirc_1.2.1-1_armhf.deb "${ROOTFS_DIR}/home/pi/Downloads/python3-lirc_1.2.1-1_armhf.deb"
+# copy file
+cp files/python3-lirc_1.2.1-1_armhf.deb "${ROOTFS_DIR}/home/pi/_installations/python3-lirc_1.2.1-1_armhf.deb"
 
 on_chroot << EOF
-dpkg -i "/home/pi/Downloads/python3-lirc_1.2.1-1_armhf.deb"
+	dpkg -i "/home/pi/_installations/python3-lirc_1.2.1-1_armhf.deb"
 EOF
 
 # append lirc config to /etc/modules
@@ -59,7 +57,7 @@ if_no_text_then_add "${ROOTFS_DIR}/boot/config.txt" "device    = /dev/lirc0" '
 driver    = default
 device    = /dev/lirc0'
 
-##IR keys
+# IR keys
 if [ ! -e files/lirc_configs.zip ]; then
 	wget "https://www.dropbox.com/s/08xttu8vaad2qn0/lirc_configs.zip" -P files/
     unzip files/lirc_configs.zip -d files/lirc_configs
@@ -69,3 +67,18 @@ fi
 cp files/lirc_configs/lircd.conf "${ROOTFS_DIR}/etc/lirc/lircd.conf"
 cp files/lirc_configs/lircrc "${ROOTFS_DIR}/home/pi/.lircrc"
 cp files/lirc_configs/lircrc "${ROOTFS_DIR}/etc/lirc/lircrc"
+
+# change files permission
+on_chroot << EOF
+	chmod 777 "/home/pi/.lircrc"
+	chmod 777 "/etc/lirc/lircrc"
+	chmod 777 "/etc/lirc/lircd.conf"
+EOF
+
+###########################################################################################
+
+
+
+
+
+

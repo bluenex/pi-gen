@@ -1,12 +1,17 @@
 #!/bin/bash -e
 
+####
+# it's easier to define path without $PREFIX (${ROOTFS_DIR})
+# so we move building step into this installRequirements.sh
+####
+
 ## clone ffmpeg
 if [ ! -d /home/pi/_installations/FFmpeg ]; then
     echo "FFmpeg is not in _installations, cloning..."
     git clone --depth=1 https://github.com/FFmpeg/FFmpeg.git /home/pi/_installations/FFmpeg
 fi
 
-## configure and make ffmpeg
+## configure, make, and install ffmpeg
 if [ ! -d /usr/local/ffmpeg ]; then
     echo "FFmpeg is already in _installations, configuring and making..."
     cd /home/pi/_installations/FFmpeg
@@ -15,18 +20,7 @@ if [ ! -d /usr/local/ffmpeg ]; then
     make install
 fi
 
-## install mqttBackend
-# dependencies for raylib, mqtt, and node-ghk
-apt-get install -y libopenal-dev libgl1-mesa-dev libxi-dev libxinerama-dev libxcursor-dev libxxf86vm-dev libxrandr-dev
-apt-get install -y cmake libx11-dev libxtst-dev libxt-dev libx11-xcb-dev libxkbcommon-dev libxkbcommon-x11-dev libtool autoconf libxinerama-dev libxkbfile-dev
-
-## install python dependencies
-pip3 install paho-mqtt
-pip3 install rx
-
-## install zeromq
-apt-get install -y libtool pkg-config build-essential autoconf automake
-
+## configure, make, and install libsodium to help install zeromq
 if [ ! -e /home/pi/_installations/libsodium-1.0.3.tar.gz ]; then
     echo "libsodium is not installed, downloading.."
     cd /home/pi/_installations/
@@ -38,9 +32,11 @@ if [ ! -e /home/pi/_installations/libsodium-1.0.3.tar.gz ]; then
     sudo make install
 fi
 
+## zeromq downloading requires proxy, so export it
 export http_proxy="http://<x>:<y>@proxy-sa.mahidol:8080"
 echo "Proxy exported succesfully."
 
+## configure, make, and install zeromq lib
 if [ ! -e /home/pi/_installations/zeromq-4.1.3.tar.gz ]; then
     echo "zeromq is not installed, downloading.."
     cd /home/pi/_installations/
