@@ -33,8 +33,8 @@ if [ ! -e /home/pi/_installations/libsodium-1.0.3.tar.gz ]; then
 fi
 
 ## zeromq downloading requires proxy, so export it
-export http_proxy="http://<x>:<y>@proxy-sa.mahidol:8080"
-echo "Proxy exported succesfully."
+# export http_proxy="http://<x>:<y>@proxy-sa.mahidol:8080"
+# echo "Proxy exported succesfully."
 
 ## configure, make, and install zeromq lib
 if [ ! -e /home/pi/_installations/zeromq-4.1.3.tar.gz ]; then

@@ -37,8 +37,8 @@ display_rotate=2"
 ###########################################################################################
 
 #Proxy (comment these lines if dont want proxy settings)
-if_no_text_then_add "${ROOTFS_DIR}/etc/apt/apt.conf.d/10proxy" "Acquire::http::proxy" "
-Acquire::http::proxy \"http://$proxyUsr:$proxyPw@proxy-sa.mahidol:8080/\";"
+# if_no_text_then_add "${ROOTFS_DIR}/etc/apt/apt.conf.d/10proxy" "Acquire::http::proxy" "
+# Acquire::http::proxy \"http://$proxyUsr:$proxyPw@proxy-sa.mahidol:8080/\";"
 
 ###########################################################################################
 
